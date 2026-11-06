@@ -1,8 +1,6 @@
 package com.koketsu.appwatch
 
 import android.Manifest
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -27,7 +24,6 @@ import com.koketsu.appwatch.ui.MonitorScreen
 import com.koketsu.appwatch.ui.UiState
 import com.koketsu.appwatch.ui.theme.AppWatchTheme
 import com.koketsu.appwatch.work.CheckScheduler
-import com.koketsu.appwatch.widget.MonitorWidgetProvider
 import com.koketsu.appwatch.widget.WidgetRenderer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,7 +61,6 @@ class MainActivity : ComponentActivity() {
                     onRequestNotificationPermission = { requestNotificationPermission() },
                     onOpenNotificationSettings = { openNotificationSettings() },
                     onOpenBatterySettings = { openBatterySettings() },
-                    onPinWidget = { pinWidget() },
                     onAddCustomTarget = { pkg -> addCustomTarget(pkg) },
                     onRemoveCustomTarget = { pkg -> removeCustomTarget(pkg) },
                     onOpenGithub = { openGithub() }
@@ -187,24 +182,6 @@ class MainActivity : ComponentActivity() {
         // 直接打开系统的电池优化列表，避免申请 REQUEST_IGNORE_BATTERY_OPTIMIZATIONS 这种敏感权限
         val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
         startActivitySafely(intent)
-    }
-
-    /**
-     * 请求桌面临时"钉"一个小部件。
-     * 系统会弹一个确认框，用户点「添加」即可，比长按桌面找小组件快得多。
-     */
-    private fun pinWidget() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            Toast.makeText(this, "系统版本过低，请长按桌面手动添加", Toast.LENGTH_LONG).show()
-            return
-        }
-        val manager = getSystemService(AppWidgetManager::class.java)
-        if (manager == null || !manager.isRequestPinAppWidgetSupported) {
-            Toast.makeText(this, "当前桌面不支持直接添加，请长按桌面手动添加", Toast.LENGTH_LONG).show()
-            return
-        }
-        val provider = ComponentName(this, MonitorWidgetProvider::class.java)
-        manager.requestPinAppWidget(provider, null, null)
     }
 
     /** 添加一个自定义监控目标，并立即切过去检查 */

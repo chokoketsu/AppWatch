@@ -53,7 +53,7 @@ appwatch.candidates=com.mobiletools.systemhelper,com.miui.systemAdSolution,...
 | 状态分三态 | `INSTALLED` / `NOT_INSTALLED` / `UNKNOWN`，异常绝不并入"未安装" |
 | 状态变化通知 | 仅 `NOT_INSTALLED → INSTALLED` 时发一条 |
 | 通知去重 | 持久化的 `lastValidStatus` 作为唯一依据，落盘后再判断，重复执行天然不重复通知 |
-| 桌面小组件 | `RemoteViews` 渲染本地状态，检查完成后主动推送刷新 |
+| 桌面小组件 | `RemoteViews` 渲染本地状态，检查完成后主动推送刷新；**在系统「小组件」里添加**，应用内不提供入口 |
 | 重启恢复 | WorkManager 自身持久化 + `BootReceiver` 幂等补排程 |
 | 完全离线 | manifest 无 `INTERNET`，无网络 SDK，无云端 |
 

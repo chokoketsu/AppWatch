@@ -1,6 +1,7 @@
 package com.koketsu.appwatch.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,7 +61,6 @@ fun MonitorScreen(
     onRequestNotificationPermission: () -> Unit,
     onOpenNotificationSettings: () -> Unit,
     onOpenBatterySettings: () -> Unit,
-    onPinWidget: () -> Unit,
     onAddCustomTarget: (String) -> Unit,
     onRemoveCustomTarget: (String) -> Unit,
     onOpenGithub: () -> Unit
@@ -74,12 +74,21 @@ fun MonitorScreen(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Column {
-                Text(text = "AppWatch", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(text = "AppWatch", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "本地应用存在性监控 · 完全离线",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                // 项目主页：小字、跟随正文次要色，不抢视线
                 Text(
-                    text = "本地应用存在性监控 · 完全离线",
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "github.com/${Targets.GITHUB_USER}",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.clickable { onOpenGithub() }
                 )
             }
 
@@ -92,7 +101,6 @@ fun MonitorScreen(
                 onOpenNotificationSettings,
                 onOpenBatterySettings
             )
-            WidgetHintCard(onPinWidget)
 
             Spacer(Modifier.height(8.dp))
             Text(
@@ -101,17 +109,7 @@ fun MonitorScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            // 作者署名 / 项目主页
-            TextButton(
-                onClick = onOpenGithub,
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(
-                    text = "github.com/${Targets.GITHUB_USER}",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
+            DisclaimerSection()
         }
     }
 }
@@ -473,25 +471,37 @@ private fun PermissionCard(
 }
 
 @Composable
-private fun WidgetHintCard(onPinWidget: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text("桌面小组件", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.height(8.dp))
+private fun DisclaimerSection() {
+    val expanded = remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxWidth()) {
+        TextButton(
+            onClick = { expanded.value = !expanded.value },
+            contentPadding = PaddingValues(0.dp)
+        ) {
             Text(
-                text = "不打开应用也能看到状态。小组件会显示目标是否已安装、" +
-                    "上次检查时间，以及后台调度是否还活着。",
-                fontSize = 12.sp,
+                text = if (expanded.value) "免责声明 ▲" else "免责声明 ▼",
+                fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(Modifier.height(10.dp))
-            OutlinedButton(onClick = onPinWidget) {
-                Text("添加到桌面", fontSize = 12.sp)
-            }
-            Spacer(Modifier.height(6.dp))
+        }
+        if (expanded.value) {
+            Spacer(Modifier.height(4.dp))
             Text(
-                text = "也可以长按桌面空白处 → 小组件 → AppWatch 手动拖出，尺寸随意拉。",
-                fontSize = 11.sp,
+                text = "1. 本应用仅用于监控你本人拥有或有权管理的设备，不得用于监控他人设备。\n" +
+                    "2. 应用只读取「某个包名是否存在」，不具备卸载、禁用、拦截、阻止安装等任何能力。" +
+                    "界面上出现的「恶意程序」等说法，仅指你自己指定要留意的目标，本应用不做行为分析、" +
+                    "不做安全判定、不给出任何安全性结论。\n" +
+                    "3. 应用不声明网络权限，不联网、不上传、不收集任何数据；所有状态仅保存在本机，" +
+                    "卸载应用即随之消失。\n" +
+                    "4. 受 Android 包可见性、厂商省电策略等系统机制影响，检查可能延迟或漏报，" +
+                    "本应用不对监控结果的及时性与完整性作任何保证。\n" +
+                    "5. 是否移除某个应用由你自行判断并承担后果；因使用本应用造成的设备异常、" +
+                    "数据丢失、业务中断等，作者不承担任何责任。\n" +
+                    "6. 被监控应用及其名称、商标、代码的知识产权归各自权利人所有，" +
+                    "本项目与其权利人无任何关联。\n" +
+                    "7. 本项目以 MIT 协议开源，按「现状」提供，不附带任何明示或默示担保。",
+                fontSize = 10.sp,
+                lineHeight = 16.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
