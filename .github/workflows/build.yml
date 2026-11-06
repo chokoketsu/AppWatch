@@ -21,8 +21,15 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: 准备 Android SDK
-        uses: android-actions/setup-android@v3
+      # GitHub 的 ubuntu-latest 已经预装 Android SDK，
+      # 不需要 android-actions/setup-android（它在新版 cmdline-tools 下会因
+      # 找不到 "tools" 包而失败）。这里只需要接受许可，让 AGP 自己去下平台。
+      - name: 接受 Android SDK 许可
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          echo "SDK = $SDK"
+          ls "$SDK" || true
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
 
       - name: 构建 Debug APK
         run: |
