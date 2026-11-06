@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--
+        状态色（与 Compose 侧保持一致）：
+          检测到（已安装）  = 红（警报）
+          未检测到（未安装）= 蓝（安全）
+          检查异常          = 橙
+    -->
+    <color name="status_installed">#FFE53935</color>
+    <color name="status_not_installed">#FF1E88E5</color>
+    <color name="status_unknown">#FFB26A00</color>
+
+    <!-- 后台健康度 -->
+    <color name="health_ok">#FF2E7D32</color>
+    <color name="health_warn">#FFE65100</color>
+
+    <!-- 小组件文字 -->
+    <color name="widget_text_primary">#FF1A1A1A</color>
+    <color name="widget_text_secondary">#FF6B6B6B</color>
+</resources>

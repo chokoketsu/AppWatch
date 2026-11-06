@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">AppWatch</string>
+    <string name="widget_label">AppWatch 监控</string>
+    <string name="widget_description">显示目标软件是否已安装及最近检查时间</string>
+
+    <!-- 状态 -->
+    <string name="status_installed">已安装</string>
+    <string name="status_not_installed">未安装</string>
+    <string name="status_unknown">检查异常</string>
+
+    <!-- 小组件 -->
+    <string name="widget_last_check">上次检查 %1$s</string>
+    <string name="widget_never_checked">尚未检查</string>
+    <string name="widget_next_check">下次 %1$s</string>
+
+    <!-- 后台健康度 -->
+    <string name="health_ok">后台监控运行正常</string>
+    <string name="health_never_ran">后台任务尚未运行过</string>
+    <string name="health_stale">后台任务已 %1$d 小时未运行</string>
+    <string name="health_unscheduled">后台任务未排程</string>
+
+    <!-- 通知 -->
+    <string name="notif_channel_name">安装状态变化</string>
+    <string name="notif_channel_desc">目标软件从未安装变为已安装时提醒一次</string>
+    <string name="notif_title">目标软件状态发生变化</string>
+    <string name="notif_text">检测到 %1$s 已经安装。</string>
+</resources>

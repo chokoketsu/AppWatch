@@ -1,0 +1,20 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+app/build
+/app/build
+
+# 本机 Gradle 守护进程工具链配置（CI 用自己的 JDK，不跟随本地）
+gradle/gradle-daemon-jvm.properties
+
+# 构建产物与本地预览图
+*.apk
+icon_preview.png
+widget_preview.png
